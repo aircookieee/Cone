@@ -1,0 +1,49 @@
+diff --git a/Il2CppDumper/Il2Cpp/Il2Cpp.cs b/Il2CppDumper/Il2Cpp/Il2Cpp.cs
+index 3798672..468963b 100644
+--- a/Il2CppDumper/Il2Cpp/Il2Cpp.cs
++++ b/Il2CppDumper/Il2Cpp/Il2Cpp.cs
+@@ -229,6 +229,11 @@ namespace Il2CppDumper
+                         var rgctxRanges = MapVATR<Il2CppTokenRangePair>(codeGenModule.rgctxRanges, codeGenModule.rgctxRangesCount);
+                         foreach (var rgctxRange in rgctxRanges)
+                         {
++                            if (rgctxRange.range.start < 0 || rgctxRange.range.length < 0 ||
++                                (long)rgctxRange.range.start + rgctxRange.range.length > rgctxs.Length)
++                            {
++                                continue;
++                            }
+                             var rgctxDefs = new Il2CppRGCTXDefinition[rgctxRange.range.length];
+                             Array.Copy(rgctxs, rgctxRange.range.start, rgctxDefs, 0, rgctxRange.range.length);
+                             rgctxsDefDictionary.Add(rgctxRange.token, rgctxDefs);
+@@ -244,6 +249,10 @@ namespace Il2CppDumper
+             methodSpecs = MapVATR<Il2CppMethodSpec>(pMetadataRegistration.methodSpecs, pMetadataRegistration.methodSpecsCount);
+             foreach (var table in genericMethodTable)
+             {
++                if (table.genericMethodIndex < 0 || table.genericMethodIndex >= methodSpecs.Length)
++                {
++                    continue;
++                }
+                 var methodSpec = methodSpecs[table.genericMethodIndex];
+                 var methodDefinitionIndex = methodSpec.methodDefinitionIndex;
+                 if (!methodDefinitionMethodSpecs.TryGetValue(methodDefinitionIndex, out var list))
+diff --git a/Il2CppDumper/config.json b/Il2CppDumper/config.json
+index 03184fc..024ea47 100644
+--- a/Il2CppDumper/config.json
++++ b/Il2CppDumper/config.json
+@@ -6,12 +6,12 @@
+   "DumpFieldOffset": true,
+   "DumpMethodOffset": true,
+   "DumpTypeDefIndex": true,
+-  "GenerateDummyDll": true,
+-  "GenerateStruct": true,
++  "GenerateDummyDll": false,
++  "GenerateStruct": false,
+   "DummyDllAddToken": true,
+-  "RequireAnyKey": true,
++  "RequireAnyKey": false,
+   "ForceIl2CppVersion": false,
+   "ForceVersion": 16,
+   "ForceDump": false,
+   "NoRedirectedPointer": false
+-}
+\ No newline at end of file
++}

@@ -1,0 +1,40 @@
+# Supplied game files and most generated/local evidence stay on the investigator's machine.
+/BanG+Dream!+Our+Notes_1.0.1_APKPure/
+/BanG+Dream!+Our+Notes_1.0.1_APKPure.xapk
+/analysis/
+
+# Local handoff notes contain device-specific state and are not publication material.
+/docs/AGENT_HANDOFF.md
+
+# Guard against accidentally staging future captures or extracted assets elsewhere.
+*.apk
+*.xapk
+*.so
+*.dat
+*.bin
+*.dll
+*.exe
+*.pdb
+*.pcap
+*.pcapng
+*.zip
+*.7z
+*.jsonl
+*.log
+*.pem
+*.key
+*.p12
+*.jks
+*.keystore
+.env
+.env.*
+
+# Regenerable build and interpreter output.
+**/bin/
+**/obj/
+**/__pycache__/
+*.py[cod]
+.vs/
+*.user
+*.suo
+.DS_Store
